@@ -5,7 +5,7 @@ make distclean
 pwd=`readlink -f .`
 export CROSS_COMPILE=$pwd/kernel-extras/arm-eabi-4.4.3/bin/arm-eabi-
 export ARCH=arm
-export version=AGAT_GS3
+export version=AGAT_LI03
 
 # Determines the number of available logical processors and sets the work thread accordingly
 export JOBS="(expr 4 + $(grep processor /proc/cpuinfo | wc -l))"
@@ -26,7 +26,7 @@ cp -r kernel-extras/zip $pwd
 make agat_defconfig
 make headers_install
 # make modules
-make -j8 2>&1 | tee ~/logs/$version.txt
+time make -j8 CC="ccache $pwd/kernel-extras/arm-eabi-4.4.3/bin/arm-eabi-gcc" 2>&1 | tee ~/logs/$version.txt
 
 echo "making boot image"
 cp arch/arm/boot/zImage mkboot/
