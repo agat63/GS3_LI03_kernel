@@ -34,7 +34,10 @@
 #ifdef CONFIG_HAS_EARLYSUSPEND
 #include <linux/earlysuspend.h>
 #endif
+<<<<<<< HEAD
 #define EARLYSUSPEND_HOTPLUGLOCK 1
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 /*
  * runqueue average
@@ -143,10 +146,17 @@ static unsigned int get_nr_run_avg(void)
  * It helps to keep variable names smaller, simpler
  */
 
+<<<<<<< HEAD
 #define DEF_SAMPLING_DOWN_FACTOR		(2)
 #define MAX_SAMPLING_DOWN_FACTOR		(100000)
 #define DEF_FREQUENCY_DOWN_DIFFERENTIAL		(5)
 #define DEF_FREQUENCY_UP_THRESHOLD		(85)
+=======
+#define DEF_SAMPLING_DOWN_FACTOR		(1)
+#define MAX_SAMPLING_DOWN_FACTOR		(100000)
+#define DEF_FREQUENCY_DOWN_DIFFERENTIAL		(5)
+#define DEF_FREQUENCY_UP_THRESHOLD		(80)
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 #define DEF_FREQUENCY_MIN_SAMPLE_RATE		(10000)
 #define MIN_FREQUENCY_UP_THRESHOLD		(11)
 #define MAX_FREQUENCY_UP_THRESHOLD		(100)
@@ -155,6 +165,7 @@ static unsigned int get_nr_run_avg(void)
 #define MAX_HOTPLUG_RATE			(40u)
 
 #define DEF_MAX_CPU_LOCK			(0)
+<<<<<<< HEAD
 #define DEF_MIN_CPU_LOCK			(0)
 #define DEF_CPU_UP_FREQ				(500000)
 #define DEF_CPU_DOWN_FREQ			(200000)
@@ -166,19 +177,40 @@ static unsigned int get_nr_run_avg(void)
 
 #define UP_THRESHOLD_AT_MIN_FREQ		(40)
 #define FREQ_FOR_RESPONSIVENESS			(500000)
+=======
+#define DEF_UP_NR_CPUS				(1)
+#define DEF_CPU_UP_RATE				(10)
+#define DEF_CPU_DOWN_RATE			(20)
+#define DEF_FREQ_STEP				(25)
+#define DEF_START_DELAY				(0)
+
+#define UP_THRESHOLD_AT_MIN_FREQ		(65)
+#define FREQ_FOR_RESPONSIVENESS			(400000)
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 #define HOTPLUG_DOWN_INDEX			(0)
 #define HOTPLUG_UP_INDEX			(1)
 
+<<<<<<< HEAD
 #ifdef CONFIG_MACH_MIDAS
 static int hotplug_rq[4][2] = {
 	{0, 100}, {100, 200}, {200, 300}, {300, 0}
+=======
+#ifdef CONFIG_CPU_EXYNOS4210
+static int hotplug_rq[4][2] = {
+	{0, 350}, {350, 200}, {200, 300}, {300, 0}
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 };
 
 static int hotplug_freq[4][2] = {
 	{0, 500000},
+<<<<<<< HEAD
 	{200000, 600000},
 	{500000, 800000},
+=======
+	{400000, 500000},
+	{400000, 800000},
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	{500000, 0}
 };
 #else
@@ -255,7 +287,10 @@ static struct dbs_tuners {
 	unsigned int cpu_down_rate;
 	unsigned int up_nr_cpus;
 	unsigned int max_cpu_lock;
+<<<<<<< HEAD
 	unsigned int min_cpu_lock;
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	atomic_t hotplug_lock;
 	unsigned int dvfs_debug;
 	unsigned int max_freq;
@@ -275,7 +310,10 @@ static struct dbs_tuners {
 	.cpu_down_rate = DEF_CPU_DOWN_RATE,
 	.up_nr_cpus = DEF_UP_NR_CPUS,
 	.max_cpu_lock = DEF_MAX_CPU_LOCK,
+<<<<<<< HEAD
 	.min_cpu_lock = DEF_MIN_CPU_LOCK,
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	.hotplug_lock = ATOMIC_INIT(0),
 	.dvfs_debug = 0,
 #ifdef CONFIG_HAS_EARLYSUSPEND
@@ -353,6 +391,7 @@ int cpufreq_pegasusq_cpu_unlock(int num_core)
 	return 0;
 }
 
+<<<<<<< HEAD
 void cpufreq_pegasusq_min_cpu_lock(unsigned int num_core)
 {
 	int online, flag;
@@ -385,6 +424,8 @@ void cpufreq_pegasusq_min_cpu_unlock(void)
 		return;
 	queue_work_on(dbs_info->cpu, dvfs_workqueue, &dbs_info->down_work);
 }
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 /*
  * History of CPU usage
@@ -472,9 +513,16 @@ show_one(down_differential, down_differential);
 show_one(freq_step, freq_step);
 show_one(cpu_up_rate, cpu_up_rate);
 show_one(cpu_down_rate, cpu_down_rate);
+<<<<<<< HEAD
 show_one(up_nr_cpus, up_nr_cpus);
 show_one(max_cpu_lock, max_cpu_lock);
 show_one(min_cpu_lock, min_cpu_lock);
+=======
+#ifndef CONFIG_CPU_EXYNOS4210
+show_one(up_nr_cpus, up_nr_cpus);
+#endif
+show_one(max_cpu_lock, max_cpu_lock);
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 show_one(dvfs_debug, dvfs_debug);
 show_one(up_threshold_at_min_freq, up_threshold_at_min_freq);
 show_one(freq_for_responsiveness, freq_for_responsiveness);
@@ -507,45 +555,93 @@ static ssize_t store_##file_name##_##num_core##_##up_down		\
 
 show_hotplug_param(hotplug_freq, 1, 1);
 show_hotplug_param(hotplug_freq, 2, 0);
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_CPU_EXYNOS4210
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 show_hotplug_param(hotplug_freq, 2, 1);
 show_hotplug_param(hotplug_freq, 3, 0);
 show_hotplug_param(hotplug_freq, 3, 1);
 show_hotplug_param(hotplug_freq, 4, 0);
+<<<<<<< HEAD
 
 show_hotplug_param(hotplug_rq, 1, 1);
 show_hotplug_param(hotplug_rq, 2, 0);
+=======
+#endif
+
+show_hotplug_param(hotplug_rq, 1, 1);
+show_hotplug_param(hotplug_rq, 2, 0);
+#ifndef CONFIG_CPU_EXYNOS4210
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 show_hotplug_param(hotplug_rq, 2, 1);
 show_hotplug_param(hotplug_rq, 3, 0);
 show_hotplug_param(hotplug_rq, 3, 1);
 show_hotplug_param(hotplug_rq, 4, 0);
+<<<<<<< HEAD
 
 store_hotplug_param(hotplug_freq, 1, 1);
 store_hotplug_param(hotplug_freq, 2, 0);
+=======
+#endif
+
+store_hotplug_param(hotplug_freq, 1, 1);
+store_hotplug_param(hotplug_freq, 2, 0);
+#ifndef CONFIG_CPU_EXYNOS4210
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 store_hotplug_param(hotplug_freq, 2, 1);
 store_hotplug_param(hotplug_freq, 3, 0);
 store_hotplug_param(hotplug_freq, 3, 1);
 store_hotplug_param(hotplug_freq, 4, 0);
+<<<<<<< HEAD
 
 store_hotplug_param(hotplug_rq, 1, 1);
 store_hotplug_param(hotplug_rq, 2, 0);
+=======
+#endif
+
+store_hotplug_param(hotplug_rq, 1, 1);
+store_hotplug_param(hotplug_rq, 2, 0);
+#ifndef CONFIG_CPU_EXYNOS4210
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 store_hotplug_param(hotplug_rq, 2, 1);
 store_hotplug_param(hotplug_rq, 3, 0);
 store_hotplug_param(hotplug_rq, 3, 1);
 store_hotplug_param(hotplug_rq, 4, 0);
+<<<<<<< HEAD
 
 define_one_global_rw(hotplug_freq_1_1);
 define_one_global_rw(hotplug_freq_2_0);
+=======
+#endif
+
+define_one_global_rw(hotplug_freq_1_1);
+define_one_global_rw(hotplug_freq_2_0);
+#ifndef CONFIG_CPU_EXYNOS4210
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 define_one_global_rw(hotplug_freq_2_1);
 define_one_global_rw(hotplug_freq_3_0);
 define_one_global_rw(hotplug_freq_3_1);
 define_one_global_rw(hotplug_freq_4_0);
+<<<<<<< HEAD
 
 define_one_global_rw(hotplug_rq_1_1);
 define_one_global_rw(hotplug_rq_2_0);
+=======
+#endif
+
+define_one_global_rw(hotplug_rq_1_1);
+define_one_global_rw(hotplug_rq_2_0);
+#ifndef CONFIG_CPU_EXYNOS4210
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 define_one_global_rw(hotplug_rq_2_1);
 define_one_global_rw(hotplug_rq_3_0);
 define_one_global_rw(hotplug_rq_3_1);
 define_one_global_rw(hotplug_rq_4_0);
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 static ssize_t store_sampling_rate(struct kobject *a, struct attribute *b,
 				   const char *buf, size_t count)
@@ -689,7 +785,11 @@ static ssize_t store_cpu_down_rate(struct kobject *a, struct attribute *b,
 	return count;
 }
 
+<<<<<<< HEAD
 
+=======
+#ifndef CONFIG_CPU_EXYNOS4210
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 static ssize_t store_up_nr_cpus(struct kobject *a, struct attribute *b,
 				const char *buf, size_t count)
 {
@@ -701,6 +801,10 @@ static ssize_t store_up_nr_cpus(struct kobject *a, struct attribute *b,
 	dbs_tuners_ins.up_nr_cpus = min(input, num_possible_cpus());
 	return count;
 }
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 static ssize_t store_max_cpu_lock(struct kobject *a, struct attribute *b,
 				  const char *buf, size_t count)
@@ -714,6 +818,7 @@ static ssize_t store_max_cpu_lock(struct kobject *a, struct attribute *b,
 	return count;
 }
 
+<<<<<<< HEAD
 static ssize_t store_min_cpu_lock(struct kobject *a, struct attribute *b,
 				  const char *buf, size_t count)
 {
@@ -729,6 +834,8 @@ static ssize_t store_min_cpu_lock(struct kobject *a, struct attribute *b,
 	return count;
 }
 
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 static ssize_t store_hotplug_lock(struct kobject *a, struct attribute *b,
 				  const char *buf, size_t count)
 {
@@ -810,9 +917,16 @@ define_one_global_rw(down_differential);
 define_one_global_rw(freq_step);
 define_one_global_rw(cpu_up_rate);
 define_one_global_rw(cpu_down_rate);
+<<<<<<< HEAD
 define_one_global_rw(up_nr_cpus);
 define_one_global_rw(max_cpu_lock);
 define_one_global_rw(min_cpu_lock);
+=======
+#ifndef CONFIG_CPU_EXYNOS4210
+define_one_global_rw(up_nr_cpus);
+#endif
+define_one_global_rw(max_cpu_lock);
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 define_one_global_rw(hotplug_lock);
 define_one_global_rw(dvfs_debug);
 define_one_global_rw(up_threshold_at_min_freq);
@@ -829,25 +943,48 @@ static struct attribute *dbs_attributes[] = {
 	&freq_step.attr,
 	&cpu_up_rate.attr,
 	&cpu_down_rate.attr,
+<<<<<<< HEAD
 	&up_nr_cpus.attr,
 	/* priority: hotplug_lock > max_cpu_lock > min_cpu_lock
 	   Exception: hotplug_lock on early_suspend uses min_cpu_lock */
 	&max_cpu_lock.attr,
 	&min_cpu_lock.attr,
+=======
+#ifndef CONFIG_CPU_EXYNOS4210
+	&up_nr_cpus.attr,
+#endif
+	/* priority: hotplug_lock > max_cpu_lock */
+	&max_cpu_lock.attr,
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	&hotplug_lock.attr,
 	&dvfs_debug.attr,
 	&hotplug_freq_1_1.attr,
 	&hotplug_freq_2_0.attr,
+<<<<<<< HEAD
+=======
+#ifndef CONFIG_CPU_EXYNOS4210
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	&hotplug_freq_2_1.attr,
 	&hotplug_freq_3_0.attr,
 	&hotplug_freq_3_1.attr,
 	&hotplug_freq_4_0.attr,
+<<<<<<< HEAD
 	&hotplug_rq_1_1.attr,
 	&hotplug_rq_2_0.attr,
+=======
+#endif
+	&hotplug_rq_1_1.attr,
+	&hotplug_rq_2_0.attr,
+#ifndef CONFIG_CPU_EXYNOS4210
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	&hotplug_rq_2_1.attr,
 	&hotplug_rq_3_0.attr,
 	&hotplug_rq_3_1.attr,
 	&hotplug_rq_4_0.attr,
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	&up_threshold_at_min_freq.attr,
 	&freq_for_responsiveness.attr,
 	NULL
@@ -865,6 +1002,7 @@ static void cpu_up_work(struct work_struct *work)
 	int cpu;
 	int online = num_online_cpus();
 	int nr_up = dbs_tuners_ins.up_nr_cpus;
+<<<<<<< HEAD
 	int min_cpu_lock = dbs_tuners_ins.min_cpu_lock;
 	int hotplug_lock = atomic_read(&g_hotplug_lock);
 
@@ -874,6 +1012,11 @@ static void cpu_up_work(struct work_struct *work)
 		nr_up = hotplug_lock - online;
 	else if (min_cpu_lock)
 		nr_up = max(nr_up, min_cpu_lock - online);
+=======
+	int hotplug_lock = atomic_read(&g_hotplug_lock);
+	if (hotplug_lock)
+		nr_up = hotplug_lock - online;
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 	if (online == 1) {
 		printk(KERN_ERR "CPU_UP 3\n");
@@ -960,11 +1103,15 @@ static int check_up(void)
 
 	if (online == num_possible_cpus())
 		return 0;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	if (dbs_tuners_ins.max_cpu_lock != 0
 		&& online >= dbs_tuners_ins.max_cpu_lock)
 		return 0;
 
+<<<<<<< HEAD
 	if (dbs_tuners_ins.min_cpu_lock != 0
 		&& online < dbs_tuners_ins.min_cpu_lock)
 		return 1;
@@ -972,6 +1119,11 @@ static int check_up(void)
 	if (num_hist % up_rate)
 		return 0;
 	if(num_hist == 0) num_hist = MAX_HOTPLUG_RATE;
+=======
+	if (num_hist % up_rate)
+		return 0;
+    if(num_hist == 0) num_hist = MAX_HOTPLUG_RATE;
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 	for (i = num_hist - 1; i >= num_hist - up_rate; --i) {
 		usage = &hotplug_history->usage[i];
@@ -993,7 +1145,11 @@ static int check_up(void)
 	if (avg_freq >= up_freq && avg_rq > up_rq) {
 		printk(KERN_ERR "[HOTPLUG IN] %s %d>=%d && %d>%d\n",
 			__func__, min_freq, up_freq, min_rq_avg, up_rq);
+<<<<<<< HEAD
 //		hotplug_history->num_hist = 0;
+=======
+		//hotplug_history->num_hist = 0;
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 		return 1;
 	}
 	return 0;
@@ -1027,6 +1183,7 @@ static int check_down(void)
 		&& online > dbs_tuners_ins.max_cpu_lock)
 		return 1;
 
+<<<<<<< HEAD
 	if (dbs_tuners_ins.min_cpu_lock != 0
 		&& online <= dbs_tuners_ins.min_cpu_lock)
 		return 0;
@@ -1034,6 +1191,11 @@ static int check_down(void)
 	if (num_hist % down_rate)
 		return 0;
 	if(num_hist == 0) num_hist = MAX_HOTPLUG_RATE; //make it circular -gm
+=======
+	if (num_hist == 0 || num_hist % down_rate)
+		return 0;
+    if(num_hist == 0) num_hist = MAX_HOTPLUG_RATE; //make it circular -gm
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 	for (i = num_hist - 1; i >= num_hist - down_rate; --i) {
 		usage = &hotplug_history->usage[i];
@@ -1055,7 +1217,11 @@ static int check_down(void)
 	if (avg_freq <= down_freq && avg_rq <= down_rq) {
 		printk(KERN_ERR "[HOTPLUG OUT] %s %d<=%d && %d<%d\n",
 			__func__, max_freq, down_freq, max_rq_avg, down_rq);
+<<<<<<< HEAD
 //		hotplug_history->num_hist = 0;
+=======
+		//hotplug_history->num_hist = 0;
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 		return 1;
 	}
 
@@ -1302,6 +1468,7 @@ static struct notifier_block reboot_notifier = {
 
 #ifdef CONFIG_HAS_EARLYSUSPEND
 static struct early_suspend early_suspend;
+<<<<<<< HEAD
 unsigned int prev_freq_step;
 unsigned int prev_sampling_rate;
 static void cpufreq_pegasusq_early_suspend(struct early_suspend *h)
@@ -1333,6 +1500,30 @@ static void cpufreq_pegasusq_late_resume(struct early_suspend *h)
 	apply_hotplug_lock();
 	start_rq_work();
 #endif
+=======
+unsigned int prev_freq_step_pg;
+unsigned int prev_sampling_rate_pg;
+static void cpufreq_pegasusq_early_suspend(struct early_suspend *h)
+{
+	dbs_tuners_ins.early_suspend =
+		atomic_read(&g_hotplug_lock);
+	prev_freq_step_pg = dbs_tuners_ins.freq_step;
+	prev_sampling_rate_pg = dbs_tuners_ins.sampling_rate;
+	dbs_tuners_ins.freq_step = 20;
+	dbs_tuners_ins.sampling_rate *= 4;
+	atomic_set(&g_hotplug_lock, 1);
+	apply_hotplug_lock();
+	stop_rq_work();
+}
+static void cpufreq_pegasusq_late_resume(struct early_suspend *h)
+{
+	atomic_set(&g_hotplug_lock, dbs_tuners_ins.early_suspend);
+	dbs_tuners_ins.early_suspend = -1;
+	dbs_tuners_ins.freq_step = prev_freq_step_pg;
+	dbs_tuners_ins.sampling_rate = prev_sampling_rate_pg;
+	apply_hotplug_lock();
+	start_rq_work();
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 }
 #endif
 
@@ -1396,9 +1587,12 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 		mutex_init(&this_dbs_info->timer_mutex);
 		dbs_timer_init(this_dbs_info);
 
+<<<<<<< HEAD
 #if !EARLYSUSPEND_HOTPLUGLOCK
 		register_pm_notifier(&pm_notifier);
 #endif
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 #ifdef CONFIG_HAS_EARLYSUSPEND
 		register_early_suspend(&early_suspend);
 #endif
@@ -1408,9 +1602,12 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 #ifdef CONFIG_HAS_EARLYSUSPEND
 		unregister_early_suspend(&early_suspend);
 #endif
+<<<<<<< HEAD
 #if !EARLYSUSPEND_HOTPLUGLOCK
 		unregister_pm_notifier(&pm_notifier);
 #endif
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 		dbs_timer_exit(this_dbs_info);
 
@@ -1509,4 +1706,7 @@ fs_initcall(cpufreq_gov_dbs_init);
 module_init(cpufreq_gov_dbs_init);
 #endif
 module_exit(cpufreq_gov_dbs_exit);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc

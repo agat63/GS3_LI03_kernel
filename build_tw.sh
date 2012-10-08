@@ -5,7 +5,7 @@ make distclean
 pwd=`readlink -f .`
 export CROSS_COMPILE=$pwd/kernel-extras/arm-eabi-4.4.3/bin/arm-eabi-
 export ARCH=arm
-export version=AGAT_GS3
+export version=AGAT_LI03
 
 # Determines the number of available logical processors and sets the work thread accordingly
 export JOBS="(expr 4 + $(grep processor /proc/cpuinfo | wc -l))"

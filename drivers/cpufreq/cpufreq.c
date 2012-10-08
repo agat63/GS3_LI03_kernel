@@ -52,9 +52,14 @@
  */
  #define __CPUFREQ_KOBJ_DEL_DEADLOCK_FIX
 
+<<<<<<< HEAD
 #define FREQ_STEPS	27
 
 static unsigned int isBooted = 0;
+=======
+#define FREQ_STEPS	26
+
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 #ifdef __CPUFREQ_KOBJ_DEL_DEADLOCK_FIX
 static DEFINE_PER_CPU(struct mutex, cpufreq_remove_mutex);
@@ -725,7 +730,11 @@ ssize_t store_UV_mV_table(struct cpufreq_policy *policy,
 {
 	unsigned int ret = -EINVAL;
 	int u[FREQ_STEPS];
+<<<<<<< HEAD
 	ret = sscanf(buf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &u[0], &u[1], &u[2], &u[3], &u[4], &u[5], &u[6], &u[7], &u[8], &u[9], &u[10], &u[11], &u[12], &u[13], &u[14], &u[15], &u[16], &u[17], &u[18], &u[19], &u[20], &u[21], &u[22], &u[23], &u[24], &u[25], &u[26]);
+=======
+	ret = sscanf(buf, "%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d", &u[0], &u[1], &u[2], &u[3], &u[4], &u[5], &u[6], &u[7], &u[8], &u[9], &u[10], &u[11], &u[12], &u[13], &u[14], &u[15], &u[16], &u[17], &u[18], &u[19], &u[20], &u[21], &u[22], &u[23], &u[24], &u[25]);
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	if(ret != FREQ_STEPS) {
 		return -EINVAL;
 	}
@@ -751,7 +760,10 @@ cpufreq_freq_attr_rw(scaling_min_freq);
 cpufreq_freq_attr_rw(scaling_max_freq);
 cpufreq_freq_attr_rw(scaling_governor);
 cpufreq_freq_attr_rw(scaling_setspeed);
+<<<<<<< HEAD
 cpufreq_freq_attr_rw(scaling_booted);
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 cpufreq_freq_attr_rw(UV_mV_table);
 
 static struct attribute *default_attrs[] = {
@@ -770,7 +782,10 @@ static struct attribute *default_attrs[] = {
 	&scaling_available_governors.attr,
 	&scaling_setspeed.attr,
 	&UV_mV_table.attr,
+<<<<<<< HEAD
 	&scaling_booted,
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	NULL
 };
 
@@ -1950,6 +1965,7 @@ static DEFINE_SEMAPHORE(cpufreq_defered_lock);
 static DEFINE_MUTEX(set_cpu_freq_lock);
 
 static unsigned long freq_limit_start_flag;
+<<<<<<< HEAD
 static unsigned int app_min_freq_limit = 384000;
 static unsigned int app_max_freq_limit = 1512000;
 static unsigned int user_min_freq_limit = 384000;
@@ -1962,6 +1978,12 @@ static void set_app_user_min_max()
 	user_min_freq_limit = GLOBALKT_MIN_FREQ_LIMIT;
 	user_max_freq_limit = GLOBALKT_MIN_FREQ_LIMIT;
 }
+=======
+static unsigned int app_min_freq_limit = MIN_FREQ_LIMIT;
+static unsigned int app_max_freq_limit = MAX_FREQ_LIMIT_STARTUP;
+static unsigned int user_min_freq_limit = MIN_FREQ_LIMIT;
+static unsigned int user_max_freq_limit = MAX_FREQ_LIMIT_STARTUP;
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 static int cpufreq_set_limits_off
 	(int cpu, unsigned int min, unsigned int max)

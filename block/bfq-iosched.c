@@ -75,7 +75,11 @@ static const int bfq_back_max = 16 * 1024;
 static const int bfq_back_penalty = 2;
 
 /* Idling period duration, in jiffies. */
+<<<<<<< HEAD
 static int bfq_slice_idle = 10; //HZ / 125;
+=======
+static int bfq_slice_idle = HZ / 125;
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 /* Default maximum budget values, in sectors and number of requests. */
 static const int bfq_default_max_budget = 16 * 1024;
@@ -423,7 +427,11 @@ static void bfq_add_rq_rb(struct request *rq)
 	struct bfq_queue *bfqq = RQ_BFQQ(rq);
 	struct bfq_entity *entity = &bfqq->entity;
 	struct bfq_data *bfqd = bfqq->bfqd;
+<<<<<<< HEAD
 	struct request *next_rq, *prev;
+=======
+	struct request *__alias, *next_rq, *prev;
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	unsigned long old_raising_coeff = bfqq->raising_coeff;
 	int idle_for_long_time = bfqq->budget_timeout +
 		bfqd->bfq_raising_min_idle_time < jiffies;
@@ -432,7 +440,16 @@ static void bfq_add_rq_rb(struct request *rq)
 	bfqq->queued[rq_is_sync(rq)]++;
 	bfqd->queued++;
 
+<<<<<<< HEAD
 	elv_rb_add(&bfqq->sort_list, rq);
+=======
+	/*
+	 * Looks a little odd, but the first insert might return an alias,
+	 * if that happens, put the alias on the dispatch list.
+	 */
+	while ((__alias = elv_rb_add(&bfqq->sort_list, rq)) != NULL)
+		bfq_dispatch_insert(bfqd->queue, __alias);
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 	/*
 	 * Check if this request is a better next-serve candidate.
@@ -496,9 +513,14 @@ add_bfqq_busy:
                 if(bfqd->low_latency && old_raising_coeff == 1 &&
 			!rq_is_sync(rq) &&
 			bfqq->last_rais_start_finish +
+<<<<<<< HEAD
                         bfqd->bfq_raising_min_inter_arr_async < jiffies) {
                         bfqq->raising_coeff = bfqd->bfq_raising_coeff;
 			bfqq->raising_cur_max_time = bfqd->bfq_raising_max_time;
+=======
+                        bfqd->bfq_raising_min_idle_time < jiffies) {
+                        bfqq->raising_coeff = bfqd->bfq_raising_coeff;
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 			entity->ioprio_changed = 1;
 			bfq_log_bfqq(bfqd, bfqq,
@@ -697,12 +719,32 @@ static inline sector_t bfq_dist_from_last(struct bfq_data *bfqd,
  * bfqd->last_position, or if rq is closer to bfqd->last_position than
  * bfqq->next_rq
  */
+<<<<<<< HEAD
 static inline int bfq_rq_close(struct bfq_data *bfqd, struct request *rq)
 {
 	return bfq_dist_from_last(bfqd, rq) <= BFQQ_SEEK_THR;
 }
 
 static struct bfq_queue *bfqq_close(struct bfq_data *bfqd)
+=======
+static inline int bfq_rq_close(struct bfq_data *bfqd, struct bfq_queue *bfqq,
+			       struct request *rq)
+{
+	sector_t sdist = bfqq->seek_mean;
+
+	if (!bfq_sample_valid(bfqq->seek_samples))
+		sdist = BFQQ_SEEK_THR;
+
+	/* If seek_mean is large, using it as close criteria is meaningless */
+	if (sdist > BFQQ_SEEK_THR)
+		sdist = BFQQ_SEEK_THR;
+
+	return bfq_dist_from_last(bfqd, rq) <= sdist;
+}
+
+static struct bfq_queue *bfqq_close(struct bfq_data *bfqd,
+				    struct bfq_queue *cur_bfqq)
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 {
 	struct rb_root *root = &bfqd->rq_pos_tree;
 	struct rb_node *parent, *node;
@@ -726,7 +768,11 @@ static struct bfq_queue *bfqq_close(struct bfq_data *bfqd)
 	 * position).
 	 */
 	__bfqq = rb_entry(parent, struct bfq_queue, pos_node);
+<<<<<<< HEAD
 	if (bfq_rq_close(bfqd, __bfqq->next_rq))
+=======
+	if (bfq_rq_close(bfqd, cur_bfqq, __bfqq->next_rq))
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 		return __bfqq;
 
 	if (blk_rq_pos(__bfqq->next_rq) < sector)
@@ -737,7 +783,11 @@ static struct bfq_queue *bfqq_close(struct bfq_data *bfqd)
 		return NULL;
 
 	__bfqq = rb_entry(node, struct bfq_queue, pos_node);
+<<<<<<< HEAD
 	if (bfq_rq_close(bfqd, __bfqq->next_rq))
+=======
+	if (bfq_rq_close(bfqd, cur_bfqq, __bfqq->next_rq))
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 		return __bfqq;
 
 	return NULL;
@@ -773,7 +823,11 @@ static struct bfq_queue *bfq_close_cooperator(struct bfq_data *bfqd,
 	 * working closely on the same area of the disk. In that case,
 	 * we can group them together and don't waste time idling.
 	 */
+<<<<<<< HEAD
 	bfqq = bfqq_close(bfqd);
+=======
+	bfqq = bfqq_close(bfqd, cur_bfqq);
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	if (bfqq == NULL || bfqq == cur_bfqq)
 		return NULL;
 
@@ -933,7 +987,11 @@ static int bfqq_process_refs(struct bfq_queue *bfqq)
 	int process_refs, io_refs;
 
 	io_refs = bfqq->allocated[READ] + bfqq->allocated[WRITE];
+<<<<<<< HEAD
 	process_refs = atomic_read(&bfqq->ref) - io_refs - bfqq->entity.on_st;
+=======
+	process_refs = atomic_read(&bfqq->ref) - io_refs;
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	BUG_ON(process_refs < 0);
 	return process_refs;
 }
@@ -2648,7 +2706,10 @@ static void *bfq_init_queue(struct request_queue *q)
 	bfqd->bfq_raising_rt_max_time = msecs_to_jiffies(300);
 	bfqd->bfq_raising_max_time = msecs_to_jiffies(7500);
 	bfqd->bfq_raising_min_idle_time = msecs_to_jiffies(2000);
+<<<<<<< HEAD
 	bfqd->bfq_raising_min_inter_arr_async = msecs_to_jiffies(500);
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	bfqd->bfq_raising_max_softrt_rate = 7000;
 
 	return bfqd;
@@ -2740,7 +2801,11 @@ SHOW_FUNCTION(bfq_fifo_expire_sync_show, bfqd->bfq_fifo_expire[1], 1);
 SHOW_FUNCTION(bfq_fifo_expire_async_show, bfqd->bfq_fifo_expire[0], 1);
 SHOW_FUNCTION(bfq_back_seek_max_show, bfqd->bfq_back_max, 0);
 SHOW_FUNCTION(bfq_back_seek_penalty_show, bfqd->bfq_back_penalty, 0);
+<<<<<<< HEAD
 SHOW_FUNCTION(bfq_slice_idle_show, bfqd->bfq_slice_idle, 0);
+=======
+SHOW_FUNCTION(bfq_slice_idle_show, bfqd->bfq_slice_idle, 1);
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 SHOW_FUNCTION(bfq_max_budget_show, bfqd->bfq_user_max_budget, 0);
 SHOW_FUNCTION(bfq_max_budget_async_rq_show, bfqd->bfq_max_budget_async_rq, 0);
 SHOW_FUNCTION(bfq_timeout_sync_show, bfqd->bfq_timeout[BLK_RW_SYNC], 1);
@@ -2751,9 +2816,12 @@ SHOW_FUNCTION(bfq_raising_max_time_show, bfqd->bfq_raising_max_time, 1);
 SHOW_FUNCTION(bfq_raising_rt_max_time_show, bfqd->bfq_raising_rt_max_time, 1);
 SHOW_FUNCTION(bfq_raising_min_idle_time_show, bfqd->bfq_raising_min_idle_time,
 	1);
+<<<<<<< HEAD
 SHOW_FUNCTION(bfq_raising_min_inter_arr_async_show,
 	      bfqd->bfq_raising_min_inter_arr_async,
 	      1);
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 SHOW_FUNCTION(bfq_raising_max_softrt_rate_show,
 	bfqd->bfq_raising_max_softrt_rate, 0);
 #undef SHOW_FUNCTION
@@ -2783,7 +2851,11 @@ STORE_FUNCTION(bfq_fifo_expire_async_store, &bfqd->bfq_fifo_expire[0], 1,
 STORE_FUNCTION(bfq_back_seek_max_store, &bfqd->bfq_back_max, 0, INT_MAX, 0);
 STORE_FUNCTION(bfq_back_seek_penalty_store, &bfqd->bfq_back_penalty, 1,
 		INT_MAX, 0);
+<<<<<<< HEAD
 STORE_FUNCTION(bfq_slice_idle_store, &bfqd->bfq_slice_idle, 0, INT_MAX, 0);
+=======
+STORE_FUNCTION(bfq_slice_idle_store, &bfqd->bfq_slice_idle, 0, INT_MAX, 1);
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 STORE_FUNCTION(bfq_max_budget_async_rq_store, &bfqd->bfq_max_budget_async_rq,
 		1, INT_MAX, 0);
 STORE_FUNCTION(bfq_timeout_async_store, &bfqd->bfq_timeout[BLK_RW_ASYNC], 0,
@@ -2796,8 +2868,11 @@ STORE_FUNCTION(bfq_raising_rt_max_time_store, &bfqd->bfq_raising_rt_max_time, 0,
 		INT_MAX, 1);
 STORE_FUNCTION(bfq_raising_min_idle_time_store,
 	       &bfqd->bfq_raising_min_idle_time, 0, INT_MAX, 1);
+<<<<<<< HEAD
 STORE_FUNCTION(bfq_raising_min_inter_arr_async_store,
 	       &bfqd->bfq_raising_min_inter_arr_async, 0, INT_MAX, 1);
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 STORE_FUNCTION(bfq_raising_max_softrt_rate_store,
 	       &bfqd->bfq_raising_max_softrt_rate, 0, INT_MAX, 0);
 #undef STORE_FUNCTION
@@ -2891,7 +2966,10 @@ static struct elv_fs_entry bfq_attrs[] = {
 	BFQ_ATTR(raising_max_time),
 	BFQ_ATTR(raising_rt_max_time),
 	BFQ_ATTR(raising_min_idle_time),
+<<<<<<< HEAD
 	BFQ_ATTR(raising_min_inter_arr_async),
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	BFQ_ATTR(raising_max_softrt_rate),
 	BFQ_ATTR(weights),
 	__ATTR_NULL

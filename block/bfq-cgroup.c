@@ -263,8 +263,12 @@ static void bfq_bfqq_move(struct bfq_data *bfqd, struct bfq_queue *bfqq,
 			bfq_del_bfqq_busy(bfqd, bfqq, 0);
 		else
 			bfq_deactivate_bfqq(bfqd, bfqq, 0);
+<<<<<<< HEAD
 	} else if (entity->on_st)
 		bfq_put_idle_entity(bfq_entity_service_tree(entity), entity);
+=======
+	}
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 	/*
 	 * Here we use a reference to bfqg.  We don't need a refcounter
@@ -299,6 +303,12 @@ static struct bfq_group *__bfq_cic_change_cgroup(struct bfq_data *bfqd,
 	struct bfq_queue *sync_bfqq = cic_to_bfqq(cic, 1);
 	struct bfq_entity *entity;
 	struct bfq_group *bfqg;
+<<<<<<< HEAD
+=======
+	struct bfqio_cgroup *bgrp;
+
+	bgrp = cgroup_to_bfqio(cgroup);
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 
 	bfqg = bfq_find_alloc_group(bfqd, cgroup);
 	if (async_bfqq != NULL) {
@@ -337,9 +347,13 @@ static void bfq_cic_change_cgroup(struct cfq_io_context *cic,
 	unsigned long uninitialized_var(flags);
 
 	bfqd = bfq_get_bfqd_locked(&cic->key, &flags);
+<<<<<<< HEAD
 	if (bfqd != NULL &&
 	    !strncmp(bfqd->queue->elevator->elevator_type->elevator_name,
 		     "bfq", ELV_NAME_MAX)) {
+=======
+	if (bfqd != NULL) {
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 		__bfq_cic_change_cgroup(bfqd, cic, cgroup);
 		bfq_put_bfqd_unlock(bfqd, &flags);
 	}
@@ -395,6 +409,7 @@ static inline void bfq_flush_idle_tree(struct bfq_service_tree *st)
 }
 
 /**
+<<<<<<< HEAD
  * bfq_reparent_leaf_entity - move leaf entity to the root_group.
  * @bfqd: the device data structure with the root group.
  * @entity: the entity to move.
@@ -437,6 +452,8 @@ static inline void bfq_reparent_active_entities(struct bfq_data *bfqd,
 }
 
 /**
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
  * bfq_destroy_group - destroy @bfqg.
  * @bgrp: the bfqio_cgroup containing @bfqg.
  * @bfqg: the group being destroyed.
@@ -454,9 +471,23 @@ static void bfq_destroy_group(struct bfqio_cgroup *bgrp, struct bfq_group *bfqg)
 	hlist_del(&bfqg->group_node);
 
 	/*
+<<<<<<< HEAD
 	 * Empty all service_trees belonging to this group before deactivating
 	 * the group itself.
 	 */
+=======
+	 * We may race with device destruction, take extra care when
+	 * dereferencing bfqg->bfqd.
+	 */
+	bfqd = bfq_get_bfqd_locked(&bfqg->bfqd, &flags);
+	if (bfqd != NULL) {
+		hlist_del(&bfqg->bfqd_node);
+		__bfq_deactivate_entity(entity, 0);
+		bfq_put_async_queues(bfqd, bfqg);
+		bfq_put_bfqd_unlock(bfqd, &flags);
+	}
+
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	for (i = 0; i < BFQ_IOPRIO_CLASSES; i++) {
 		st = bfqg->sched_data.service_tree + i;
 
@@ -468,6 +499,7 @@ static void bfq_destroy_group(struct bfqio_cgroup *bgrp, struct bfq_group *bfqg)
 		 */
 		bfq_flush_idle_tree(st);
 
+<<<<<<< HEAD
 		/*
 		 * It may happen that some queues are still active
 		 * (busy) upon group destruction (if the corresponding
@@ -485,11 +517,14 @@ static void bfq_destroy_group(struct bfqio_cgroup *bgrp, struct bfq_group *bfqg)
 			bfq_reparent_active_entities(bfqd, bfqg, st);
 			bfq_put_bfqd_unlock(bfqd, &flags);
 		}
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 		BUG_ON(!RB_EMPTY_ROOT(&st->active));
 		BUG_ON(!RB_EMPTY_ROOT(&st->idle));
 	}
 	BUG_ON(bfqg->sched_data.next_active != NULL);
 	BUG_ON(bfqg->sched_data.active_entity != NULL);
+<<<<<<< HEAD
 
 	/*
 	 * We may race with device destruction, take extra care when
@@ -502,6 +537,8 @@ static void bfq_destroy_group(struct bfqio_cgroup *bgrp, struct bfq_group *bfqg)
 		bfq_put_async_queues(bfqd, bfqg);
 		bfq_put_bfqd_unlock(bfqd, &flags);
 	}
+=======
+>>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 	BUG_ON(entity->tree != NULL);
 
 	/*
