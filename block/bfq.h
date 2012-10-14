@@ -1,9 +1,6 @@
 /*
-<<<<<<< HEAD
  * BFQ-v3r4 for 3.0: data structures and common functions prototypes.
-=======
  * BFQ-v3r2 for 3.0: data structures and common functions prototypes.
->>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
  *
  * Based on ideas and code from CFQ:
  * Copyright (C) 2003 Jens Axboe <axboe@kernel.dk>

@@ -558,13 +558,8 @@ static int cpufreq_governor_dbs(struct cpufreq_policy *policy,
 				return rc;
 			}
 
-<<<<<<< HEAD
-			min_sampling_rate = 13500;
-				//(MIN_SAMPLING_RATE_RATIO * jiffies_to_usecs(10)) / 20;
-=======
 			min_sampling_rate =
 				(MIN_SAMPLING_RATE_RATIO * jiffies_to_usecs(10)) / 20;
->>>>>>> 927f76c0cef4301dab724484db3a2d53470cb0cc
 			/* Bring kernel and HW constraints together */
 			min_sampling_rate = max(min_sampling_rate,
 					MIN_LATENCY_MULTIPLIER * latency);

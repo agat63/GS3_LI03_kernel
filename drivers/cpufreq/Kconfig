@@ -215,17 +215,12 @@ config CPU_FREQ_DEFAULT_GOV_ADAPTIVE
 config CPU_FREQ_DEFAULT_GOV_PEGASUSQ
 	bool "pegasusq"
 	select CPU_FREQ_GOV_PEGASUSQ
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> bd7c4c21cc822e55cddbe50d4cdfd5f1472e6a3f
 config CPU_FREQ_DEFAULT_GOV_HYPER
         bool "HYPER"
         select CPU_FREQ_GOV_HYPER
         help
           Use the CPUFreq governor 'HYPER' as default.
-<<<<<<< HEAD
           
 config CPU_FREQ_DEFAULT_GOV_HOTPLUG
 	bool "hotplug"
@@ -239,8 +234,6 @@ config CPU_FREQ_DEFAULT_GOV_HOTPLUG
 	  support the hotplug governor. If unsure have a look at
 	  the help section of the driver. Fallback governor will be the
 	  performance governor.
-=======
->>>>>>> bd7c4c21cc822e55cddbe50d4cdfd5f1472e6a3f
 
 endchoice
 
@@ -409,7 +402,6 @@ config CPU_FREQ_GOV_LAZY
 	tristate "'lazy' cpufreq governor"
 		depends on CPU_FREQ
 
-<<<<<<< HEAD
 config CPU_FREQ_GOV_KTOONSERVATIVE
 	tristate "'ktoonservative' cpufreq governor"
 	depends on CPU_FREQ
@@ -434,8 +426,6 @@ config CPU_FREQ_GOV_KTOONSERVATIVE
 
 	  If in doubt, say N.
 
-=======
->>>>>>> bd7c4c21cc822e55cddbe50d4cdfd5f1472e6a3f
 config CPU_FREQ_GOV_LAZY
 	tristate "'lazy' cpufreq governor"
 		depends on CPU_FREQ
@@ -563,11 +553,6 @@ config CPU_FREQ_GOV_HYPER
           'HYPER' - a tweaked "ondemand" based smart and smooth optimized governor!
            If in doubt, say Y.
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> bd7c4c21cc822e55cddbe50d4cdfd5f1472e6a3f
 menu "x86 CPU frequency scaling drivers"
 depends on X86
 source "drivers/cpufreq/Kconfig.x86"
